@@ -8,15 +8,18 @@ class ArtistsController < ApplicationController
       @artists = Artist.all
     end
   end
-  
+
   def show
     @artist = Artist.find(params[:id])
   end
 
   def new
-   binding.pry
-    @artist = Artist.new
-  end
+      if @preferences && !@preferences.allow_create_artists
+        redirect_to artists_path
+      else
+        @artist = Artist.new
+      end
+    end
 
   def create
     @artist = Artist.new(artist_params)
